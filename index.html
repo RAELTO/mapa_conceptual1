@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Mapa Conceptual – Herramientas Digitales para la Lectura</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f6fb;
+    width: 1400px;
+    padding: 18px 20px 22px;
+    color: #222;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: #1a3a5c;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 12px;
+  }
+  .header-left h1 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
+  .header-left h2 { font-size: 10.5px; font-weight: 400; opacity: 0.82; margin-top: 2px; }
+  .header-right {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    justify-content: flex-end; font-size: 10px;
+  }
+  .header-right span {
+    background: rgba(255,255,255,0.13);
+    padding: 2px 8px; border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* ── MAIN LAYOUT: 3 columns ── */
+  .main {
+    display: grid;
+    grid-template-columns: 220px 1fr 220px;
+    gap: 10px;
+    align-items: start;
+  }
+
+  /* ── LEFT COLUMN ── */
+  .col-left { display: flex; flex-direction: column; gap: 8px; }
+
+  /* ── CENTER COLUMN ── */
+  .col-center { display: flex; flex-direction: column; align-items: center; gap: 0; }
+
+  /* ── RIGHT COLUMN ── */
+  .col-right { display: flex; flex-direction: column; gap: 8px; }
+
+  /* ── INFO CARD (propósito / estructura) ── */
+  .info-card {
+    background: white; border-radius: 8px; padding: 10px 12px;
+    border-left: 4px solid #1a3a5c;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .info-card h3 {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px;
+    color: #1a3a5c; font-weight: 700; margin-bottom: 6px;
+  }
+  .info-card ul { padding-left: 12px; }
+  .info-card ul li { font-size: 10px; line-height: 1.45; color: #333; margin-bottom: 2px; list-style: disc; }
+  .info-card p { font-size: 10px; line-height: 1.45; color: #333; }
+  .source-tag {
+    display: inline-block; font-size: 9px;
+    background: #eef2f8; color: #1a3a5c;
+    padding: 1px 5px; border-radius: 10px;
+    font-weight: 700; vertical-align: middle; margin-left: 2px;
+  }
+
+  /* ── CENTRAL NODE ── */
+  .central-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; }
+  .central {
+    background: #1a3a5c; color: white; border-radius: 10px;
+    padding: 12px 20px; text-align: center;
+    width: 88%;
+    font-size: 13px; font-weight: 700;
+    box-shadow: 0 4px 14px rgba(26,58,92,0.28);
+  }
+  .central .sub { font-size: 9.5px; font-weight: 400; opacity: 0.82; margin-top: 4px; line-height: 1.4; }
+
+  /* ── HORIZONTAL CONNECTOR FROM CENTER ── */
+  .h-connector {
+    width: 100%; height: 2px; background: #1a3a5c;
+    margin: 0;
+  }
+  .v-conn { width: 2px; background: #1a3a5c; height: 16px; margin: 0 auto; }
+  .v-conn-sm { width: 2px; background: #c0c8d4; height: 10px; margin: 0 auto; }
+
+  /* ── BRANCHES ROW ── */
+  .branches-row {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+    margin-top: 0;
+    align-items: flex-start;
+  }
+
+  /* ── BRANCH CARD ── */
+  .branch {
+    background: white; border-radius: 8px; padding: 10px 10px 10px;
+    flex: 1;
+    border-top: 4px solid;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .branch h3 {
+    font-size: 10.5px; font-weight: 700; margin-bottom: 4px;
+    text-transform: uppercase; letter-spacing: 0.3px;
+  }
+  .branch .verb { font-size: 9.5px; font-style: italic; opacity: 0.6; margin-bottom: 5px; display: block; }
+  .branch ul { list-style: none; padding: 0; }
+  .branch ul li {
+    font-size: 10px; padding: 2px 0 2px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    position: relative; line-height: 1.35;
+  }
+  .branch ul li:last-child { border-bottom: none; }
+  .branch ul li::before {
+    content: "▸"; position: absolute; left: 0;
+    font-size: 8px; top: 4px; opacity: 0.55;
+  }
+  .branch .consequence {
+    margin-top: 7px; padding: 5px 6px;
+    border-radius: 5px; font-size: 9.5px;
+    font-weight: 600; text-align: center; line-height: 1.3;
+  }
+
+  /* branch colors */
+  .b1 { border-color: #2e86de; }
+  .b1 h3 { color: #2e86de; }
+  .b1 .consequence { background: #e8f3fc; color: #1a5fa0; }
+
+  .b2 { border-color: #27ae60; }
+  .b2 h3 { color: #27ae60; }
+  .b2 .consequence { background: #e8f7ef; color: #1a7a45; }
+
+  .b3 { border-color: #e67e22; }
+  .b3 h3 { color: #d35400; }
+  .b3 .consequence { background: #fdf0e3; color: #a04000; }
+
+  .b4 { border-color: #8e44ad; }
+  .b4 h3 { color: #8e44ad; }
+  .b4 .consequence { background: #f4e9fb; color: #6c3483; }
+
+  .b5 { border-color: #c0392b; }
+  .b5 h3 { color: #c0392b; }
+  .b5 .consequence { background: #fbeae9; color: #922b21; }
+
+  /* ── INTEGRATOR NODE ── */
+  .integrator {
+    background: #fff8e1; border: 2px solid #e67e22;
+    border-radius: 8px; padding: 8px 14px;
+    width: 88%; margin: 0 auto;
+    text-align: center;
+  }
+  .integrator h3 { font-size: 10px; font-weight: 700; color: #d35400;
+    text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
+  .integrator p { font-size: 9.5px; line-height: 1.4; color: #444; }
+
+  /* ── REFERENCES ── */
+  .references {
+    background: white; border-radius: 8px; padding: 10px 14px;
+    margin-top: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    border-top: 3px solid #1a3a5c;
+  }
+  .references h3 { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px;
+    color: #1a3a5c; font-weight: 700; margin-bottom: 6px; }
+  .references p { font-size: 10px; line-height: 1.5; color: #333;
+    padding-left: 24px; text-indent: -24px; margin-bottom: 3px; }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    justify-content: center; margin-top: 8px; font-size: 9.5px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 4px; }
+  .legend-dot { width: 9px; height: 9px; border-radius: 50%; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <h1>Herramientas digitales para la lectura — Mapa conceptual</h1>
+    <h2>Basado en: Godoy (2020) &amp; Bernabé Sánchez (2020)</h2>
+  </div>
+  <div class="header-right">
+    <span><strong>Estudiante:</strong> Ramón Elías Toro Flórez</span>
+    <span><strong>Asignatura:</strong> Lectura y escritura en el contexto digital — NRC 8198</span>
+    <span><strong>Docente:</strong> Elizabeth Lara Arcos</span>
+    <span><strong>Corporación Universitaria Minuto de Dios</strong></span>
+    <span><strong>Fecha:</strong> 22 de marzo de 2026</span>
+  </div>
+</div>
+
+<!-- 3-COLUMN LAYOUT -->
+<div class="main">
+
+  <!-- LEFT: propósito + estructura -->
+  <div class="col-left">
+    <div class="info-card">
+      <h3>Propósito comunicativo</h3>
+      <ul>
+        <li><strong>Godoy (2020):</strong> Estado del arte de la escritura digital y colaborativa; identificación de vacíos investigativos. <span class="source-tag">G</span></li>
+        <li><strong>Bernabé Sánchez (2020):</strong> Resignificación de la lectura literaria centrada en el lector activo y la intertextualidad. <span class="source-tag">BS</span></li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h3>Estructura textual</h3>
+      <ul>
+        <li><strong>Introducción:</strong> Contextualización y propósito.</li>
+        <li><strong>Desarrollo:</strong> Apartados temáticos jerarquizados (plataformas, interacciones, revisión / lector, intertextualidad, polifonía).</li>
+        <li><strong>Conclusión:</strong> Síntesis y proyección de desafíos.</li>
+      </ul>
+    </div>
+    <div class="info-card" style="border-left-color:#27ae60;">
+      <h3>Convergencia entre textos</h3>
+      <p>Ambos coinciden en que las herramientas digitales reconfiguran las prácticas lectoras y ubican al lector como <strong>participante activo</strong> en la construcción del significado.</p>
+    </div>
+  </div>
+
+  <!-- CENTER: central node + branches -->
+  <div class="col-center">
+
+    <div class="central-wrap">
+      <div class="central">
+        Herramientas digitales para la lectura
+        <div class="sub">Las tecnologías digitales transforman y amplían las prácticas lectoras, generando nuevas formas de producir, distribuir y construir significado</div>
+      </div>
+    </div>
+
+    <div class="v-conn"></div>
+
+    <!-- BRANCHES -->
+    <div class="branches-row">
+
+      <div class="branch b1">
+        <h3>Plataformas digitales</h3>
+        <ul>
+          <li>Wikis / Wikispaces</li>
+          <li>Google Drive / Docs</li>
+          <li>Moodle (LMS)</li>
+          <li>Blogs</li>
+          <li>Twitter / Instagram</li>
+        </ul>
+        <span class="verb">permiten →</span>
+        <div class="consequence">Lectura y escritura colaborativa en línea</div>
+      </div>
+
+      <div class="branch b2">
+        <h3>El hipertexto</h3>
+        <ul>
+          <li>Lectura no lineal</li>
+          <li>Múltiples itinerarios</li>
+          <li>Intertextualidad digital</li>
+          <li>Multilectores simultáneos</li>
+          <li>"Telaraña discursiva"</li>
+        </ul>
+        <span class="verb">genera →</span>
+        <div class="consequence">Mayor autonomía e interactividad del lector</div>
+      </div>
+
+      <div class="branch b3">
+        <h3>Multimodalidad</h3>
+        <ul>
+          <li>Texto + imagen + audio</li>
+          <li>Emojis y GIFs</li>
+          <li>Géneros híbridos</li>
+          <li>Potenciales significados (affordance)</li>
+        </ul>
+        <span class="verb">amplía →</span>
+        <div class="consequence">Experiencia lectora diversificada y enriquecida</div>
+      </div>
+
+      <div class="branch b4">
+        <h3>Nuevas alfabetizaciones</h3>
+        <ul>
+          <li>Multialfabetizaciones</li>
+          <li>Competencia lectora digital</li>
+          <li>Lectura crítica en red</li>
+          <li>Intertexto lector activo</li>
+        </ul>
+        <span class="verb">demandan →</span>
+        <div class="consequence">Lectores críticos y autónomos en entornos digitales</div>
+      </div>
+
+      <div class="branch b5">
+        <h3>El lector activo</h3>
+        <ul>
+          <li>Cocreador (Eco, Iser, Sartre)</li>
+          <li>Horizonte de expectativas</li>
+          <li>Intertexto propio</li>
+          <li>Lectura como "acontecimiento"</li>
+        </ul>
+        <span class="verb">transforma →</span>
+        <div class="consequence">Lectura como práctica interactiva y constructora de sentido</div>
+      </div>
+
+    </div>
+
+    <!-- REFERENCES -->
+    <div class="references" style="width:100%;margin-top:10px;">
+      <h3>Referencias</h3>
+      <p>Bernabé Sánchez, G. (2020). Hacia un nuevo concepto de la lectura literaria. En <em>El proceso lector desde la intertextualidad. Propuestas y desafíos del texto literario</em> (pp. 28-43). Universidad Peruana de Ciencias Aplicadas (UPC). https://elibro.net/es/ereader/uniminuto/165227?page=28</p>
+      <p>Godoy, L. (2020). Escritura digital y colaborativa: una práctica discursiva multifacética. Estado del arte y perspectivas para el futuro. <em>Quintú Quimün</em>, (4), 1-28.</p>
+    </div>
+
+    <!-- LEGEND -->
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#2e86de;"></div> Plataformas</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#27ae60;"></div> Hipertexto</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#e67e22;"></div> Multimodalidad</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#8e44ad;"></div> Alfabetizaciones</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#c0392b;"></div> Lector activo</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#1a3a5c;"></div> Concepto central</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#c7def7;"></div> <span class="source-tag">G</span></li>Godoy</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#c7def7;"></div> <span class="source-tag">BS</span></li>Bernabé Sánchez</div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: contexto teórico -->
+  <div class="col-right">
+    <div class="info-card" style="border-left-color:#2e86de;">
+      <h3>Teorías del lector <span class="source-tag">BS</span></h3>
+      <ul>
+        <li><strong>Sartre:</strong> El lector completa la obra.</li>
+        <li><strong>Gadamer:</strong> Lectura como interioridad; comprensión desde el bagaje personal.</li>
+        <li><strong>Barthes:</strong> Lectura como juego y placer.</li>
+        <li><strong>Eco:</strong> Texto abierto; cooperación del lector.</li>
+        <li><strong>Kristeva:</strong> Intertextualidad; texto como mosaico de citas.</li>
+        <li><strong>Bajtín:</strong> Polifonía; múltiples voces en el texto.</li>
+      </ul>
+    </div>
+    <div class="info-card" style="border-left-color:#8e44ad;">
+      <h3>Conceptos clave <span class="source-tag">G</span></h3>
+      <ul>
+        <li><strong>Escritura colaborativa:</strong> producción textual grupal mediada por tecnología.</li>
+        <li><strong>Revisión digital:</strong> reflexión metalingüística en línea.</li>
+        <li><strong>Géneros electrónicos:</strong> híbridos entre oralidad y escritura.</li>
+        <li><strong>Remediación:</strong> lo digital reorganiza lo analógico.</li>
+      </ul>
+    </div>
+    <div class="info-card" style="border-left-color:#c0392b;">
+      <h3>Intertexto lector <span class="source-tag">BS</span></h3>
+      <ul>
+        <li>Textos previos + experiencias + expectativas.</li>
+        <li>Activa asociaciones metaliterarias e intertextuales.</li>
+        <li>Determina la interpretación individual.</li>
+        <li>Genera el "tercer texto" en cada lectura.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
